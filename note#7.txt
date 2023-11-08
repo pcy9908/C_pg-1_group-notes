@@ -1,0 +1,147 @@
+#include<stdio.h>
+
+int main() {
+   int i = 10;
+   int* p = &i;
+   printf("P의 주소값 : %p\n", &p);
+   printf("i의 주소값 : %p\n", &i);
+   printf("i의 주소값 : %p\n", p);
+   printf("i의 값 : %d\n", i);
+   printf("i의 값 : %d\n", *p);
+
+}
+포인터 p를 보면 i의 주소값을 가르키기 때문에 *p를 출력했을때 i의 값을 반환하게되고 p는 i의 주소값을 가지게된다 여기서 &p 의 값이 &i의 값과 다른이유는 p는 i의 주소를 가르키고 있지만 본인의 주소값을 가지고 그 값에 i의 값을 가지고 있기 떄문에
+#include<stdio.h>
+
+int main() {
+   int i = 10;
+   int* p = &i;
+   *p = i + 20;
+   printf("i의 값 : %d\n", i);
+   i += 20;
+   printf("i의 값 : %d\n", *p);
+
+}
+코드를 보면 p=가 i의 값을 나타내므로 *값에 값을 넣게 되면 i의 주소값으로 들어가 결국 i의 값으로 나타나지게된다 그러기 떄문에 i+=20을 했을때 동일하게 20씩 증가하였다
+#include<stdio.h>
+int Swap(int x, int y) {
+   int tmp;
+   tmp= x;
+   x = y;
+   y = tmp;
+   return 0;
+}
+int main() {
+   int x = 10, y = 5;
+   printf("Swap() 함수 실행 전\n");
+   printf("x = %d, y = %d이다.\n\n", x, y);
+   
+   Swap(x, y);
+   printf("Swap() 함수 실행 후\n");
+   printf("x = %d, y = %d이다.\n", x, y);
+   
+    return 0;
+   
+}
+Q.왜 Swap함수를 써도 서로의 값이 안바뀌게 될까?
+함수를 사용할떄 들어가게되는거는 인자만 들어가고 변수 자체가 들어갔다
+
+이 코드를 보면 x 와  y에 각각 10  5를 넣고 서로 바꾸는 함수를 작성하였다 하지만 함수안에 들어간것은 각각의 10 5 의 값이 들어가고 변수x y 의 바꿔지는 함수로서의 역할을 못하게 되었다
+#include<stdio.h>
+int Swap(int *x, int *y) {
+   int tmp;
+   tmp= *x;
+   *x = *y;
+   *y = tmp;
+   return 0;
+}
+int main() {
+   int x = 10, y = 5;
+   printf("Swap() 함수 실행 전\n");
+   printf("x = %d, y = %d이다.\n\n", x, y);
+   
+   Swap(&x, &y);
+   printf("Swap() 함수 실행 후\n");
+   printf("x = %d, y = %d이다.\n", x, y);
+   
+    return 0;
+   
+이번엔 포인터를 이용하여서Swap함수를 작성하였다 달라진거는 보내주는 인자를 주소값을 보내게 된것과 함수 내 변수들을 포인터로 받아서 교환하게 하여서 주소값을 서로 바꿔서 포인터가 서로의 주소값을 가리킬수있도록 바꾸고 결론적으로는 서로가 서로를 가리켜서 출력되는 값이 바뀌였다
+#include <stdio.h>
+
+void CountIncrement1(int n){
+   n++;
+}                     // 값을 전달
+void CountIncrement2(int* n) {
+   (*n)++;
+}                     // 주소를 전달
+ int main(void)
+{
+    int a = 10;
+   printf("a의 초깃값 : %d\n", a);
+   CountIncrement1(a);
+   printf("CountIncrement1 함수 실행 후 a의 값 : %d\n", a);
+   CountIncrement2(&a);
+   printf("CountIncrement2 함수 실행 후 a의 값 : %d\n", a);
+   
+   return 0;
+}
+이코드를 보면 함수에서의 인자증가는 함수밖에 영향을 주지 않는다 하지만 포인터로 받게되면 함수밖에 인자에 주소로 직접 보내기 때문에 영향을 받는다
+
+ int a[] = { 10, 20, 30, 40, 50 };
+ int* p = a;
+ int i;
+ printf("배열 a를 이용한 주소 표현\n");
+ for (i = 0; i < 5; i++)
+    printf("a[%d]의 주소 %p\n", i, a + i);
+
+ printf("\n포인터 p룰 이용한 배열 주소 표현\n");
+ for(i=0;i<5;i++)
+    printf("a[%d]의 주소 %p\n", i, p + i);
+ printf("\n포인터p를 이용한 배열 값 표현\n");
+ for (i = 0; i < 5; i++)
+    printf("a[%d]의 주소 %p\n", i, *(p + i));
+return 0;
+이 코드를 보면 배열의 주소를 표현하는 a와 그값을 받은 p를 이용하여 배열값 출력과 주소값들의출력을 나타낸다
+#include <stdio.h>
+
+      
+ int main(void)
+{
+    int a[] = { 11,22,33,44,55 };
+    int* p = a;
+    printf("*p의 값 = %d\n", *p);
+    p++;
+    printf("*(p+1)의 값 = %d\n", *p);
+    p++;
+    printf("*(p+2)의 값 = %d\n", *p);
+    p--;
+    printf("*(p+1)의 값 = %d\n", *p);
+    return 0;
+}
+이코드를 보면 포인터p에 증감 연산자인 ++ 과--를 사용하는 모습인데 포인터 변수에게 ++ 이나 --으로 사용하게되면 p++은 다음 배열값을 표현하게되고  --는 이전 배열값을 갖게된다
+#include <stdio.h>
+
+int SumArray(int *pA, int Size);
+ int main(void)
+{
+    int a[] = { 10, 5, 15 ,25, 7 };
+    int Sum;
+    Sum = SumArray(a, 5);
+    printf("배열a의 합은 %d이다", Sum);
+    return 0;
+}
+ int SumArray(int*pA, int Size) {
+    int result = 0, i;
+    for (i = 0; i < Size; i++) {
+       result += pA[i];
+       //result+= *pA++
+       //result+= *(pA+i)
+    }
+    return result;
+ }
+이코드를 보면 배열의 합을 나타내는 함수를 작성하는 것은 기존에 배웠던것드이랑 같지만 함수에 받는 인자 값을 포인터로 받는 다는 점이 차이점이고 
+ result += pA[i];
+ //result+= *pA++
+ //result+= *(pA+i)
+이부분에서 이3개의 코드가 전부 같은 동작을 한다는것을 알게되었다
