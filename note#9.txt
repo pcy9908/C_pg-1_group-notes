@@ -1,0 +1,199 @@
+C programming 
+11/29
+//예제 12-1
+#if 00
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+	FILE* fp;
+	char ch;
+
+	if ((fp = fopen("basic.txt", "w")) == NULL)
+	{
+		printf("파일이 열리지 않습니다.\n");
+		exit(1);
+	}
+
+	printf("문자 하나를 입력하세요.\n");
+	ch = getchar();
+
+	while (ch != 'q')
+	{
+		fputc(ch, fp);
+		ch = getchar();
+	}
+	printf("파일 입력이 종료되었습니다.\n");
+	return 0;
+}
+#endif
+
+파일이 제대로 안열리면 주소값에 NULL이 저장되므로 if문에 읽기 기능이 NULL을 불러오면 꺼지게 된다. getchar문으로 문자형 ch를 입력받고 while문을 통하여 ch가 q가 나올 때 까지 입력 받게 하여 basic.txt에 저장되도록 한다.
+
+
+
+
+//예제 12-2
+#if 0
+#define _CRT_SECURE_NO_WARNINGS_
+#include <stdio.h>
+#include < stdlib.h>
+#define LINE 30
+
+int main(void)
+{
+	FILE* fp1, * fp2;
+	char line[LINE];
+
+	fp1 = fopen("lineInput.txt", "r");
+
+	if (fp1 == NULL)
+	{
+		printf("파일을 열수 없습니다.\n");
+		exit(1);
+	}
+
+	fp2 = fopen("linetarget.txt", "w");
+
+	while (fgets(line, LINE, fp1) != NULL)
+		fputs(line, fp2);
+
+	fclose(fp1);
+	fclose(fp2);
+
+	return 0;
+}
+#endif
+
+Fp1,2을 설정하고 fp1에 lineInput.txt에 원하는 문자를 쓴다. 그리고 fp2를 w로 설정하여 쓰게 만들고 while문을 이용하여 fp1이 오류가 나지 않을 때 까지 fp1에 있는 내용을 fp2에 넣게하는 것이다. fp2와 관련된 fputs은 이해가 되지만 fp1에 관련된 fgets에 ( 1, 2, 3)에서 2에 LINE이 들어가는 이유는 잘 모르겠다.
+A LINE은 위에 매크로로 30을 할당해서 LINE이 들어가면 30이 들어가는 것과 같이 사용할수있음
+
+//예제 12-3
+#if 0
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+ int main(void)
+ {
+	 FILE * fp;
+	 int n = 4000;
+	 if ((fp = fopen("basic.txt", "wb")) == NULL)
+		 {
+		 printf("파일을 열 수 없습니다.\n");
+		 exit(1);
+		 }
+	
+		 fwrite(&n, sizeof(int), 1, fp);
+	
+		 fclose(fp);
+	 return 0;
+	 }
+
+#endif
+
+ //예제 12-4
+#if 0
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+ struct students 
+{
+	  char name[40];
+	  char address[40];
+	  int age;
+};
+ 
+typedef struct students student;
+ 
+int main(void)
+	  {
+	  FILE * fp1;
+	 
+		  student st1 = { "홍길동", "서울", 30 }, st2;
+	 
+	  if ((fp1 = fopen("basic.txt", "w")) == NULL)
+		 
+	 {
+		  printf("파일을 열 수 없습니다.\n");
+			  exit(1);
+		  }
+
+	 fprintf(fp1, "%s %s %d\n", st1.name, st1.address, st1.age);
+	  fclose(fp1);
+	 
+		  if ((fp1 = fopen("basic.txt", "r")) == NULL)
+		  {
+		  printf("파일을 열 수 없습니다.\n");
+		  exit(1);
+		  }
+	 
+  fscanf(fp1, "%s %s %d\n", st2.name, st2.address, &st2.age);
+	  printf("이름 : %s, 거주지 : %s, 나이 : %d\n\n", st2.name, st2.address, st2.age);
+	 
+		  fclose(fp1);
+	  return 0;
+}
+
+#endif 
+
+st1과 st2를 설정하는 과정에서 st1은 구체적으로, st2는 st1과 동일하게 설정했다. 그래서 파일스캔을 fp1에 설정하고 st2.name,address등을 설정해도 오류가 나지 않는 것이 st2와 st1은 같다고 설정되어있기 때문이라 생각했다.
+A st1의 스트럭트값을 가져와서 st2의 가져오게 해서 같은 출력값을 가지게된다
+
+
+//예제 12-5
+#if 01
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main(void)
+{
+	FILE* fp;
+	char str[10];
+
+	if ((fp = fopen("data.txt", "wb")) == NULL)
+	{
+		printf("파일을 열 수 없습니다.\n");
+		exit(1);
+	}
+
+	fprintf(fp, "abcdefghij");
+	fclose(fp);
+
+	if ((fp = fopen("data.txt", "rb")) == NULL)
+	{
+		printf("파일을 열 수 없습니다.\n");
+		exit(1);
+	}
+
+	fgets(str, 11, fp);
+	printf("str 문장 출력 : %s\n\n", str);
+
+	fseek(fp, 4L, SEEK_SET);
+	fgets(str, 3, fp);
+	printf("5번째부터 2글자 출력 : %s\n", str);
+
+	fseek(fp, -3L, SEEK_CUR);
+	fgets(str, 3, fp);
+	printf("현 위치의 3글자 앞에서부터 2글자 출력 : %s\n", str);
+	
+	fseek(fp, -9L, SEEK_END);
+	fgets(str, 5, fp);
+	printf("맨 뒤에서 9글자 앞에서부터 4글자 출력 : %s\n", str);
+	
+	fclose(fp);
+	
+	return 0;
+}
+
+#endif
+5번째부터 2글자 출력은 먼저 SEEK_SET으로 설정되어 있어 맨 처음인 a에서 시작하여 4L 만큼 앞으로 가면 e에 도달하게 되고 거기서 2글자 출력이라 e, f가 나오게 된다
+현 위치의 3글자 앞에서부터 2글자 출력은 현 위치는 이해가 되지 않는다… SEEK_CUR은 현 위치인데 모두 입력 받은 다음의 현 위치라고 생각하여 j라고 생각했는데 그렇다면 정답은 j,i가 되어야 한다.
+
+맨 뒤에서 9글자 앞에서부터 4글자는 총 10글자 중에서 뒤에서 9번째라 시작점은 b가 되고, 거기서부터 4글자를 출력하면 되서 b,c,d,e가 된다.
+
