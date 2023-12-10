@@ -1,0 +1,510 @@
+#if 0
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void Select_Sort(int* a, int count);
+
+int main(void)
+{
+   int data[] = { 4,2,20,8,1,33,35,9,6,26 };
+   int i;
+
+   printf("정렬 전 데이터\n");
+
+   for (i = 0; i < 10; i++)
+   {
+      printf("[%d]", data[i]);
+   }
+      Select_Sort(data, 10);
+      puts("\n");
+
+      printf("정렬 후 데이터\n");
+
+      for (i = 0; i < 10; i++)
+      {
+         printf("[%d]", data[i]);
+      }
+      puts("\n");
+      return 0;
+}
+
+void Select_Sort(int* a, int count)
+{
+   int i, j;
+   int min_value, min_index;
+
+   for (i = 0;i < count- 1;i++)
+   {
+      min_index =i;
+      min_value = a[i];
+
+      for (j = i + 1; j < count;j++)
+      {
+         if (min_value > a[j])
+         {
+            min_index = j;
+            min_value = a[j];
+         }
+      }
+      a[min_index] = a[i];
+      a[i] = min_value;
+         
+   }
+}
+#endif
+
+select_sort(int *a, int count)에서 두 번째 for문에서 최댓값 구하듯이 구하는 방식으로 이해하였다.
+또한 int main(void)에서 puts을 통해 정렬 전 배열과 정렬 후 배열을 열거하였다.
+
+-------------------------------------------------------------------------------
+#if 01
+#include <stdio.h>
+
+void Bubble_Sort(int* a, int count);
+
+int main(void)
+{
+   int data[] = { 4,2,20,8,1,33,35,9,6,26 };
+   int i;
+
+   printf("정렬 전 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   Bubble_Sort(data, 10);
+   puts("\n");
+
+   printf("정렬 후 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   puts("\n");
+   return 0;
+}
+
+void Bubble_Sort(int* a, int count)
+{
+   int i, j;
+   int temp;
+
+   for (i = 0; i < count - 1; i++)
+   {
+      for (j = 1; j < count - i; j++)
+      {
+         if (a[j - 1] > a[j])
+         {
+            temp = a[j - 1];
+            a[j - 1] = a[j];
+            a[j] = temp;
+         }
+      }
+   }
+}
+#endif
+
+Bubble_sort 함수 안에서 a[j-1]을 a[i]로 써도 되지 않을까란 생각이 들었다. 왜냐하면 for문의 조건을 보면
+i=0 이거 j=1 이었기 때문에 그렇다. 아래 if문을 생각하면 a[0] = 4, a[1] = 2 였는데
+temp는 a[0]인 4가 되고, 그 4를 a[1]에 대입하여 a[1]을 temp가 되면 a[0]은 2가 되고 a[1]은 4로 
+정렬되는 것을 이해할 수 있었다. 
+---------------------------
+#if 01
+#include <stdio.h>
+
+void Insert_Sort(int* a, int count);
+
+int main(void)
+{
+   int data[] = { 4,2,20,8,1,33,35,9,6,26 };
+   int i;
+
+   printf("정렬 전 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   Insert_Sort (data, 10);
+   puts("\n");
+
+   printf("정렬 후 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   puts("\n");
+   return 0;
+}
+
+void Insert_Sort(int* a, int count)
+{
+   int i, j;
+   int temp;
+
+   for (i = 0; i < count; i++)
+   {
+      temp = a[i];
+      j = i;
+
+      while ((a[j - 1] > temp) && (j > 0))
+      {
+         a[j] = a[j - 1];
+         j = j - 1;
+      }
+      a[j] = temp;
+   }
+}
+#endif
+
+a[0] = 4 , a[1] = 2, a[2] = 20. 함수의 for문을 해석해보면 i=0일 때 temp 는 a[0]이 되고, j = 0이 된다.
+while 문에는 영향이 가지 않으므로 a[0] = temp = 4가 된다. i=1일 때, temp = 2가 되고 j = 1이 된다.
+while 문에서 a[0] > 2 가 성립하고 j가 1로서 성립되므로 while문이 유효하게 되고, a[j] = a[j-1] 코드에서
+a[1] = a[0]이 되고 j = j-1 로 인해 j=0이 된다. 그래서 while문이 빠져나와 a[0] = temp 가 되고 이 값이 2가 된다. 이것을 반복하면 정렬이 된다.
+
+
+
+
+------------------------
+#include <stdio.h>
+
+void Shell_Sort(int* a, int count);
+
+int main(void)
+{
+   int data[] = { 4,2,20,8,1,33,35,9,6,26 };
+   int i;
+
+   printf("정렬 전 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   Shell_Sort(data, 10);
+   puts("\n");
+
+   printf("정렬 후 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   puts("\n");
+
+   return 0;
+}
+
+void Shell_Sort(int* a, int count)
+{
+   int i, j, inc, h;
+   int temp;
+
+   for (h = count / 2; h > 0; h /= 2)
+   {
+for(i = 0; i < h; i++)
+{
+      for (j = i + h; h < count; j += h)
+      {
+         temp = a[j];
+         inc = j;
+
+         while (inc > h - 1 && a[inc - h] > temp)
+         {
+            a[inc] = a[inc - h];
+            inc - inc - h;
+         }
+         a[inc] = temp;
+}
+      }
+   }
+}
+
+
+
+
+
+-----------------------------------
+#include <stdio.h>
+
+void Quick_Sort(int* a, int count);
+
+int main(void)
+{
+   int data[] = { 4,2,20,8,1,33,35,9,6,26 };
+   int i;
+
+   printf("정렬 전 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   Quick_Sort(data, 10);
+   puts("\n");
+
+   printf("정렬 후 데이터\n");
+
+   for (i = 0; i < 10; i++)
+      printf("[%d]", data[i]);
+
+   puts("\n");
+
+   return 0;
+}
+
+void Quick_Sort(int* a, int count)
+{
+   int i, j;
+   int v, temp;
+
+   if (count > 1)
+   {
+      v = a[count - 1];
+      i = -1;
+      j = count - 1;
+
+      for ( ; ; )
+      {
+         while (a[++i] < v);
+         while (a[--j] > v);
+         if (i >= j) break;
+         temp = a[i];
+         a[i] = a[j];
+         a[j] = temp;
+      }
+      temp = a[i];
+      a[i] = a[count - 1];
+      a[count - 1] = temp;
+      Quick_Sort(a, i);
+      Quick_Sort(a + i + 1, count - i - 1);
+   }
+}
+
+
+
+--------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_NUM 100000 // 10,000개의 데이터 발생
+
+//정렬 함수들 원형
+void Select_Sort(int* a, int count);
+void Bubble_Sort(int* a, int count);
+void Insert_Sort(int* a, int count);
+void Shell_Sort(int* a, int count);
+void Quick_Sort(int* a, int count);
+
+//난수 발생 함수
+void Rand_Data(int* a);
+int Random(int start, int end);
+
+//속도 비교함수
+void Check_Speed(int num, char* str, int* a, int count);
+
+int main(void)
+{
+   int data [MAX_NUM ];
+   int i;
+
+   char* str[] = { "Select", "Bubble", "Insert", "Shell", "Quick" };
+
+   Rand_Data(data);
+
+   for (i = 0; i < 5; i++)
+      Check_Speed(i, str[i], data, MAX_NUM);
+
+   return 0;
+}
+
+void array_swap(int* a, int i, int j)
+{
+   int temp, k;
+   temp = a[j];
+   for (k = j - 1; k >= i; k--)
+   {
+      a[k + 1] = a[k];
+      a[i] = temp;
+
+   }
+}
+
+int move_index(int* a, int i, int j)
+{
+   int k = j;
+   while (k > i)
+   {
+      if (a[k - 1] <= a[j])
+         return k;
+      k--;
+   }
+   return 0;
+}
+
+void Select_Sort(int* a, int count)
+{
+   int i, j;
+   int min_value, min_index;
+
+   for (i = 0; i < count - 1; i++)
+   {
+      min_index = i;
+      min_value = a[i];
+
+      for (j = i + 1; j < count; j++)
+      {
+         if (min_value > a[j])
+         {
+            min_index = j;
+            min_value = a[j];
+         }
+      }
+      a[min_index] = a[i];
+      a[i] = min_value;
+
+   }
+}
+
+void Bubble_Sort(int* a, int count)
+{
+   int i, j;
+   int temp;
+
+   for (i = 0; i < count - 1; i++)
+   {
+      for (j = 1; j < count - i; j++)
+      {
+         if (a[j - 1] > a[j])
+         {
+            temp = a[j - 1];
+            a[j - 1] = a[j];
+            a[j] = temp;
+         }
+      }
+   }
+}
+
+void Insert_Sort(int* a, int count)
+{
+   int i, j;
+   int temp;
+
+   for (i = 0; i < count; i++)
+   {
+      temp = a[i];
+      j = i;
+
+      while ((a[j - 1] > temp) && (j > 0))
+      {
+         a[j] = a[j - 1];
+         j = j - 1;
+      }
+      a[j] = temp;
+   }
+}
+
+void Shell_Sort(int* a, int count)
+{
+   int i, j, inc, h;
+   int temp;
+
+   for (h = count / 2; h > 0; h /= 2)
+   {
+      for(i=0; i<h;i++)
+      {
+         for (j = i + h; h < count; j += h)
+         {
+            temp = a[j];
+            inc = j;
+
+            while (inc > h - 1 && a[inc - h] > temp)
+            {
+               a[inc] = a[inc - h];
+               inc - inc - h;
+            }
+            a[inc] = temp;
+         }
+      }
+   }
+}
+
+void Quick_Sort(int* a, int count)
+{
+   int i, j;
+   int v, temp;
+
+   if (count > 1)
+   {
+      v = a[count - 1];
+      i = -1;
+      j = count - 1;
+
+      for (; ; )
+      {
+         while (a[++i] < v);
+         while (a[--j] > v);
+         if (i >= j) break;
+         temp = a[i];
+         a[i] = a[j];
+         a[j] = temp;
+      }
+      temp = a[i];
+      a[i] = a[count - 1];
+      a[count - 1] = temp;
+      Quick_Sort(a, i);
+      Quick_Sort(a + i + 1, count - i - 1);
+   }
+}
+
+void Rand_Data(int* a)
+{
+   int i;
+   srand((unsigned)time(NULL)); //난수 발생 초기화
+   for (i = 0; i < MAX_NUM; i++)
+   {
+      a[i] = Random(1, MAX_NUM);
+      //1~9999 사이의 난수 발생
+   }
+}
+
+int Random(int start, int end)
+{
+   int rnd = 0;
+   rnd = rand() % (end - start) + start;
+   return end;
+}
+
+void Check_Speed(int num, char* str, int* a, int count)
+{
+   clock_t start, end;
+   int temp[MAX_NUM];
+   int i;
+
+   for(i=0; i<MAX_NUM;i++)
+      temp[i] = a[i];
+   start = clock();
+
+   switch (num)
+   {
+   case 0:
+      Select_Sort(temp, count);
+      break;
+
+   case 1:
+      Bubble_Sort(temp, count);
+      break;
+
+   case 2:
+      Insert_Sort(temp, count);
+      break;
+
+   case 3:
+      Shell_Sort(temp, count);
+      break;
+
+   case 4:
+      Quick_Sort(temp, count);
+      break;
+   }
+
+   end = clock(); //종료 시간 확인
+   printf("%d10s의 수행 시간은 %5ld입니다.\n", str, end - start);
+}
